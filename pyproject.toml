@@ -1,0 +1,73 @@
+[build-system]
+requires = ["setuptools >=61", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pytest-kairos"
+authors = [
+    { name = "Marcelo Duarte Trevisani", email = "marceloduartetrevisani@gmail.com" },
+]
+description = "Pytest plugin with random number generation, reproducibility, and test repetition"
+keywords = ["pytest", "random", "plugin", "unittest"]
+license = { text = "Apache-2.0" }
+dynamic = ["version"]
+requires-python = ">=3.8"
+dependencies = [
+    "pytest>=5.0.0",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Software Development :: Testing",
+]
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[project.entry-points.pytest11]
+pytest-kairos = "pytest_kairos.plugin"
+
+[project.optional-dependencies]
+polars = [
+    "polars"
+]
+numpy = [
+    "numpy"
+]
+pandas = [
+    "pandas"
+]
+testing = [
+    "pytest-kairos[polars,numpy,pandas]",
+    "pytest",
+    "pytest-cov",
+    "pytest-mock",
+]
+dev = [
+    "pytest-kairos[testing]",
+    "pre-commit",
+    "ruff",
+]
+
+[project.urls]
+Source = "https://github.com/marcelotrevisani/pytest-kairos"
+GitHub = "https://github.com/marcelotrevisani/pytest-kairos"
+
+[tool.setuptools.packages.find]
+include = ["pytest_kairos", "pytest_kairos.*"]
+where = ["src"]
+
+[tool.setuptools_scm]
+write_to = "src/pytest_kairos/_version.py"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
