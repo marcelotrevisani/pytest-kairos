@@ -45,7 +45,7 @@ jobs:
           python -m pytest tests \
                             -vv \
                             --color=yes \
-                            --cov=./ \
+                            --cov= \
                             --cov-append \
                             --cov-report html:coverage-html \
                             --cov-report xml:coverage.xml \

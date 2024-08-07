@@ -70,3 +70,18 @@ write_to = "src/pytest_kairos/_version.py"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.ruff]
+ line-length = 88
+ indent-width = 4
+ target-version = "py310"
+
+ [tool.ruff.lint]
+ select = ["E", "F"]
+ fixable = ["ALL"]
+
+ [tool.ruff.format]
+ quote-style = "double"
+ indent-style = "space"
+ skip-magic-trailing-comma = false
+ line-ending = "auto"
