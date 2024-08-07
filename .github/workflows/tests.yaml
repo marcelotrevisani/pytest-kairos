@@ -37,7 +37,7 @@ jobs:
         run: python -m build --wheel
 
       - name: Install Wheel
-        run: python -m pip install "dist/*.whl[testing]"
+        run: python -m pip install "$(find dist/*.whl)[testing]"
 
       - name: Run tests
         run: |
