@@ -30,13 +30,6 @@ def pytest_addoption(parser):
         type=int,
         help="Seed for random number generator",
     )
-    parser.addoption(
-        "--repeat",
-        action="store",
-        default=1,
-        type=int,
-        help="Number of times to repeat each test",
-    )
 
 
 @pytest.fixture(scope="session", autouse=True)
