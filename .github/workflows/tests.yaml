@@ -55,6 +55,7 @@ jobs:
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
+        if: matrix.os == 'ubuntu-latest' && matrix.py_ver == '3.12'
         with:
           files: coverage.xml
           directory: .
@@ -63,7 +64,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Upload test results to Codecov
-        if: ${{ !cancelled() }}
+        if: matrix.os == 'ubuntu-latest' && matrix.py_ver == '3.12'
         uses: codecov/test-results-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
