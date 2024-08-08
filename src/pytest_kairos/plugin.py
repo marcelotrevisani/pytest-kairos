@@ -30,20 +30,18 @@ def pytest_addoption(parser):
         type=int,
         help="Seed for random number generator",
     )
-    parser.addoption(
-        "--repeat",
-        action="store",
-        default=1,
-        type=int,
-        help="Number of times to repeat each test",
+
+
+def pytest_configure(config):
+    config.addinivalue_line(
+        "markers",
+        "config_kairos: configure the random number and variable for pytest-kairos",
     )
 
 
 @pytest.fixture(scope="session", autouse=True)
 def kairos_seed(request):
-    seed = request.config.getoption(
-        "--seed", random.randint(KAIROS_MIN_SEED_VAL, KAIROS_MAX_SEED_VAL)
-    )
+    seed = request.config.getoption("--seed", random.randint(KAIROS_MIN_SEED_VAL, KAIROS_MAX_SEED_VAL))
     random.seed(seed)
 
     with suppress(ModuleNotFoundError):
@@ -70,10 +68,7 @@ def dispatch_list_args(args, metafunc, mark):
         size = mark.kwargs.get("size", None)
         metafunc.parametrize(
             kairos_var,
-            [
-                generate_random_number(dtype(), min=min_val, max=max_val, size=size)
-                for _ in range(repeat)
-            ],
+            [generate_random_number(dtype(), min=min_val, max=max_val, size=size) for _ in range(repeat)],
         )
 
 
@@ -141,9 +136,7 @@ def _generate_np_float_array(dtype, min=None, max=None, size=None):
     size = (1, 1) if size is None else size
     rng = np.random.default_rng()
     random_matrix = rng.random(size=size, dtype=type(dtype))
-    return random_matrix * generate_random_number(
-        np.int64(), min=min, max=max, size=size
-    ).astype(type(dtype))
+    return random_matrix * generate_random_number(np.int64(), min=min, max=max, size=size).astype(type(dtype))
 
 
 @generate_random_number.register(pl.datatypes.classes.FloatType)
@@ -151,9 +144,7 @@ def _generate_pl_float_dataframe(dtype, min=None, max=None, size=None):
     np_array = _generate_np_float_array(dtype=np.float64(), min=min, max=max, size=size)
     pl_array = pl.DataFrame(np_array)
     if not isinstance(pl_array.dtypes[0], type(dtype)):
-        pl_array = pl_array.with_columns(
-            [pl.col(col).cast(type(dtype)) for col in pl_array.columns]
-        )
+        pl_array = pl_array.with_columns([pl.col(col).cast(type(dtype)) for col in pl_array.columns])
     return pl_array
 
 
@@ -162,7 +153,5 @@ def _generate_pl_int_dataframe(dtype, min=None, max=None, size=None):
     np_array = _generate_np_int_array(np.int128, min=min, max=max, size=size)
     pl_array = pl.DataFrame(np_array)
     if not isinstance(pl_array.dtypes[0], type(dtype)):
-        pl_array = pl_array.with_columns(
-            [pl.col(col).cast(type(dtype)) for col in pl_array.columns]
-        )
+        pl_array = pl_array.with_columns([pl.col(col).cast(type(dtype)) for col in pl_array.columns])
     return pl_array
