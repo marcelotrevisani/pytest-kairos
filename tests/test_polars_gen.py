@@ -8,9 +8,7 @@ def test_pl_float(pl_float):
     assert pl_float.shape == (2, 2)
 
 
-@pytest.mark.config_kairos(
-    "pl_float", dtype=pl.Float32, size=(3, 3), min=-1, max=4, repeat=100
-)
+@pytest.mark.config_kairos("pl_float", dtype=pl.Float32, size=(3, 3), min=-1, max=4, repeat=100)
 def test_pl_float_min_max(pl_float):
     assert pl_float.dtypes == [pl.Float32] * 3
     assert pl_float.shape == (3, 3)
@@ -19,9 +17,7 @@ def test_pl_float_min_max(pl_float):
     assert ((pl_float["column_2"] >= -1) & (pl_float["column_2"] < 4)).all()
 
 
-@pytest.mark.config_kairos(
-    "pl_float", dtype=pl.Float32, size=(3, 3), min=0, max=3, repeat=100
-)
+@pytest.mark.config_kairos("pl_float", dtype=pl.Float32, size=(3, 3), min=0, max=3, repeat=100)
 def test_pl_int_min_max(pl_float):
     assert pl_float.dtypes == [pl.Float32] * 3
     assert pl_float.shape == (3, 3)
